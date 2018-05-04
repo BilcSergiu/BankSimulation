@@ -1,8 +1,12 @@
 package ro.tuc.pt.Assignment4.Model;
 
 import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Person implements Serializable {
+import javax.swing.JOptionPane;
+
+public class Person implements Serializable, Observer{
 	private int CNP;
 	private String name;
 	private String phone;
@@ -35,5 +39,11 @@ public class Person implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		JOptionPane.showMessageDialog(null, "Clientului: "+this.getCNP()+" i s-a modificat contul: "+arg);
+		
 	}
 }

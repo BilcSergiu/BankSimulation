@@ -12,13 +12,16 @@ import java.util.Iterator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
-public class Bank implements BancProc, Serializable {
+public class Bank implements BancProc, Serializable, Observer {
 
 	private Hashtable<Integer, ArrayList<Account>> hashAccounts;
 	private Hashtable<Integer, Person> hashClients;
+	// private AccountsObserver observer;
 
 	public Bank() {
 		hashAccounts = new Hashtable<Integer, ArrayList<Account>>();
@@ -28,6 +31,13 @@ public class Bank implements BancProc, Serializable {
 		}
 		if (restoreClients() != null) {
 			hashClients = this.restoreClients();
+		}
+
+		List<Account> accounts = allAccounts();
+
+		for (Account acc : accounts) {
+			acc.addObserver(acc.getPerson());
+			acc.addObserver(this);
 		}
 		// hashAccounts = this.restoreAccounts();
 		// hashClients = this.restoreClients();
@@ -77,6 +87,7 @@ public class Bank implements BancProc, Serializable {
 		ArrayList<Account> accounts = hashAccounts.get(a.getPerson().getCNP());
 		System.out.println(a.getId());
 		accounts.remove(a);
+
 		hashAccounts.put(a.getPerson().getCNP(), accounts);
 		assert isWellFormed() : "Banca nu e bine formata";
 		assert (size - 1 == this.sizeAc()) : "Eroare la stergerea unui nou cont!";
@@ -187,7 +198,7 @@ public class Bank implements BancProc, Serializable {
 		int nrAccounts, nrClients = 0;
 		ArrayList<Account> accounts;
 		ArrayList<Person> clients;
-		
+
 		Enumeration<Integer> keys2 = hashClients.keys();
 		while (keys2.hasMoreElements()) {
 			Integer key = (Integer) keys2.nextElement();
@@ -281,4 +292,12 @@ public class Bank implements BancProc, Serializable {
 		}
 		return size;
 	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		JOptionPane.showMessageDialog(null, "Clientului: " + arg + " i s-a modificat contul: " + arg);
+
+	}
+	
+
 }

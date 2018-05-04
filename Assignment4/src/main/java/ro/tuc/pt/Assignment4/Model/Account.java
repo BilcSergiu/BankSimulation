@@ -1,10 +1,12 @@
 package ro.tuc.pt.Assignment4.Model;
 
 import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
-public class Account implements Serializable {
+public class Account extends Observable implements Serializable {
 
 	private String id;
 	private double value;
@@ -17,12 +19,14 @@ public class Account implements Serializable {
 
 	public void addMoney(double value) {
 		this.setValue(this.getValue() + value);
+		this.notifyObservers(id);
 	}
 
 	public void removeMoney(double value) {
 		if (this.getValue() < value) {
 			JOptionPane.showMessageDialog(null, "Not enough funds!");
 		} else {
+			this.notifyObservers(id);
 			this.setValue(this.getValue() - value);
 		}
 	}
@@ -54,5 +58,10 @@ public class Account implements Serializable {
 	public void setValue(double value) {
 		this.value = value;
 	}
+
+	public String toString(){
+		return "Contul "+id+" al clientului: "+person.getCNP()+" a fost modificat!";
+	}
+	
 
 }

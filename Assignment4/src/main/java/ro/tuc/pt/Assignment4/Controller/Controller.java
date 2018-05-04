@@ -102,7 +102,7 @@ public class Controller {
 
 		view.actionDepunere(l -> {
 			if (account != null) {
-				account.setValue(account.getValue() + Double.parseDouble(view.getTextDepunere().getText()));
+				account.addMoney(Double.parseDouble(view.getTextDepunere().getText()));
 				bank.updateAccount(account);
 				bank.writePersons(bank.getHashClients());
 				bank.writeAccounts(bank.getHashAccounts());
@@ -116,7 +116,7 @@ public class Controller {
 		view.actionRetragere(l -> {
 			if (account != null) {
 				if (account.getValue() >= Double.parseDouble(view.getTextDepunere().getText())) {
-					account.setValue(account.getValue() - Double.parseDouble(view.getTextDepunere().getText()));
+					account.removeMoney(Double.parseDouble(view.getTextDepunere().getText()));
 					bank.updateAccount(account);
 					bank.writePersons(bank.getHashClients());
 					bank.writeAccounts(bank.getHashAccounts());
@@ -198,7 +198,7 @@ public class Controller {
 								view.getTextDepunere().setVisible(true);
 								view.getBtnRetragere().setVisible(true);
 							} else {
-								view.getBtnDepunere().setVisible(false);
+								//view.getBtnDepunere().setVisible(false);
 								view.getTextDepunere().setVisible(false);
 								view.getBtnRetragere().setVisible(false);
 							}
@@ -283,7 +283,7 @@ public class Controller {
 		if (clients.size() > 0) {
 			view.getTextNumeDepuneri().setText(clients.get(0).getName());
 		}
-		fillCbAccountDepuneri();
+		//fillCbAccountDepuneri();
 	}
 
 	public void fillCbAccountDepuneri() {
